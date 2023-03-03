@@ -1,9 +1,23 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <title>My Hello World</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <h1>Cool</h1>
+    <h1>Button Click Test</h1>
+    <button id="button1">Button 1</button>
+    <button id="button2">Button 2</button>
+    <div id="response"></div>
+    <script>
+      $('#button1').click(() => {
+        $.post('/button1', (data) => {
+          $('#response').text(data);
+        });
+      });
+      $('#button2').click(() => {
+        $.post('/button2', (data) => {
+          $('#response').text(data);
+        });
+      });
+    </script>
   </body>
 </html>
