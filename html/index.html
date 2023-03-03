@@ -1,23 +1,39 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  </head>
-  <body>
-    <h1>Button Click Test</h1>
-    <button id="button1">Button 1</button>
-    <button id="button2">Button 2</button>
-    <div id="response"></div>
-    <script>
-      $('#button1').click(() => {
-        $.post('/button1', (data) => {
-          $('#response').text(data);
-        });
-      });
-      $('#button2').click(() => {
-        $.post('/button2', (data) => {
-          $('#response').text(data);
-        });
-      });
-    </script>
-  </body>
+<head>
+	<title>Button Click Demo</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("#button1").click(function() {
+				$.ajax({
+					type: "POST",
+					url: "/button1",
+					data: { button: "1" },
+					success: function(response) {
+						console.log(response);
+						$('#response').text(response);
+					}
+				});
+			});
+
+			$("#button2").click(function() {
+				$.ajax({
+					type: "POST",
+					url: "/button2",
+					data: { button: "2" },
+					success: function(response) {
+						console.log(response);
+						$('#response').text(response);
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="response"></div>
+	<button id="button1">Button 1</button>
+	<button id="button2">Button 2</button>
+</body>
 </html>
