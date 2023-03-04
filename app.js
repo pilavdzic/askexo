@@ -1,14 +1,31 @@
 
 //UPDATE this in ecosystem.config file
 
-console.log('here is the path from process.env.NODE_MODULES_PATH:')
-console.log(process.env.NODE_MODULES_PATH)
-
 const nodeModulesPath = process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
 const express = require(`${nodeModulesPath}/express`);
+const winston = require(`${nodeModulesPath}/winston`);
 
 const apiKey = process.env.API_KEY || require('./env/env.js')
 var app = express();
+
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  defaultMeta: { service: 'myapp' },
+  transports: [
+    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.Console()
+  ]
+});
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url} ${res.statusCode}`);
+  next();
+});
 
 //app.use(express.static(__dirname + '/public'));
 
