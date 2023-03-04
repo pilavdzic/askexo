@@ -1,5 +1,10 @@
 const express = require('../../../home/korby/node_modules/express');
+require('../../../home/korby/node_modules/dotenv').config({ path: './env/.env' });
+
+const apiKey = process.env.API_KEY;
 var app = express();
+
+console.log(apiKey)
 
 //app.use(express.static(__dirname + '/public'));
 
@@ -8,12 +13,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/button1', (req, res) => {
-  console.log('Button 1 was clicked');
   res.send('Button 1 was clicked');
 });
 
 app.post('/button2', (req, res) => {
-  console.log('Button 2 was clicked');
   res.send('Button 2 was clicked');
 });
 
