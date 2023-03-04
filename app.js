@@ -1,5 +1,9 @@
 
 //UPDATE this in ecosystem.config file
+
+console.log('here is the path from process.env.NODE_MODULES_PATH:')
+console.log(process.env.NODE_MODULES_PATH)
+
 const nodeModulesPath = process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
 const express = require(`${nodeModulesPath}/express`);
 
