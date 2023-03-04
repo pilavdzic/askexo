@@ -1,13 +1,8 @@
-
-//UPDATE this in ecosystem.config file
-
-const nodeModulesPath = process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
+const nodeModulesPath = '../../../home/korby/node_modules';//process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
 const express = require(`${nodeModulesPath}/express`);
 const winston = require(`${nodeModulesPath}/winston`);
 
 const apiKey = process.env.API_KEY || require('./env/env.js')
-var app = express();
-
 
 const logger = winston.createLogger({
   level: 'info',
@@ -21,6 +16,10 @@ const logger = winston.createLogger({
     new winston.transports.Console()
   ]
 });
+
+logger.info('node modules path is...' + nodeModulesPath);
+
+var app = express();
 
 app.use((req, res, next) => {
   logger.info(`${req.method} ${req.url} ${res.statusCode}`);
