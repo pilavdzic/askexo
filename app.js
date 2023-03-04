@@ -1,4 +1,4 @@
-const nodeModulesPath = '../../../home/korby/node_modules';//process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
+const nodeModulesPath = process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
 const express = require(`${nodeModulesPath}/express`);
 const winston = require(`${nodeModulesPath}/winston`);
 
