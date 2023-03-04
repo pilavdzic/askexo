@@ -4,8 +4,6 @@ require('../../../home/korby/node_modules/dotenv').config({ path: './env/.env' }
 const apiKey = process.env.API_KEY;
 var app = express();
 
-console.log(apiKey)
-
 //app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
@@ -13,7 +11,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/button1', (req, res) => {
-  res.send('Button 1 was clicked');
+  console.log('srvr side - btn 1')
+  res.send('Button 1 was clicked' + apiKey);
 });
 
 app.post('/button2', (req, res) => {
