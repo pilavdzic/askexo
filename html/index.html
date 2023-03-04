@@ -5,23 +5,12 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$("#button1").click(function() {
+			$("#btnSubmit").click(function() {
+				var query = $("#query").val()
 				$.ajax({
 					type: "POST",
-					url: "/button1",
-					data: { button: "1" },
-					success: function(response) {
-						console.log(response);
-						$('#response').text(response);
-					}
-				});
-			});
-
-			$("#button2").click(function() {
-				$.ajax({
-					type: "POST",
-					url: "/button2",
-					data: { button: "2" },
+					url: "/btnSubmit",
+					data: { query: query },
 					success: function(response) {
 						console.log(response);
 						$('#response').text(response);
@@ -32,8 +21,14 @@
 	</script>
 </head>
 <body>
+	<div>
+		<p><label">What do you want to ask?</label></p>
+		<textarea id="query" rows="4" cols="50"></textarea>
+		<br>
+	</div>
+	<br>
 	<div id="response"></div>
-	<button id="button1">Button One</button>
-	<button id="button2">Button Two</button>
+	<br>
+	<button id="btnSubmit">Submit</button>
 </body>
 </html>
