@@ -4,7 +4,7 @@
 console.log('here is the path from process.env.NODE_MODULES_PATH:')
 console.log(process.env.NODE_MODULES_PATH)
 
-const nodeModulesPath = process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
+const nodeModulesPath = '../../../home/korby/node_modules';//process.env.NODE_MODULES_PATH || 'C:/Users/mattc/node_modules';
 const express = require(`${nodeModulesPath}/express`);
 
 const apiKey = process.env.API_KEY || require('./env/env.js')
