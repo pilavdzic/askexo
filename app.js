@@ -1,10 +1,14 @@
 const nodeModulesPath = require('./modules/getNodeModulesPath')
 const express = require(`${nodeModulesPath}/express`);
 const bodyParser = require(`${nodeModulesPath}/body-parser`)
-const getQueryEmbedding = require('./modules/getQueryEmbedding').getQueryEmbedding
+//const getQueryEmbedding = require('./modules/getQueryEmbedding').getQueryEmbedding
 const getOpenAiResponse = require('./modules/getOpenAiResponse')
+const vectorCalcs = require('./modules/vectorCalcs')
+
+console.log(vectorCalcs())
 
 const app = express();
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // this is used for parsing the JSON object from POST
@@ -15,8 +19,8 @@ app.get('/', (req, res) => {
 
 app.post('/btnSubmit', async (req, res) => {
   const query = req.body.query;
-  const emb = getQueryEmbedding('hello');
-  console.log(emb)
+  //const emb = await getQueryEmbedding('hello');
+  //console.log('arr length: ' + emb.length);
   const response = await getOpenAiResponse(query)
   res.send(response);
 });
