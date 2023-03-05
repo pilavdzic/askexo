@@ -1,22 +1,8 @@
-const nodeModulesPath = require('./modules/nodeModulesPath')
+const nodeModulesPath = require('./modules/getNodeModulesPath')
 const express = require(`${nodeModulesPath}/express`);
 const bodyParser = require(`${nodeModulesPath}/body-parser`)
-const getQueryEmbedding = require('./modules/queryEmbedding').getQueryEmbedding
-
-const openai = require('./modules/openAiRequester');
-
-const getResponse = async function(prompt){
-  
-  const response = await openai.createCompletion({
-  model: "text-davinci-003",
-  prompt: prompt,
-  max_tokens: 100,
-  temperature: 0
-  });
-  return response.data.choices[0].text
-}
-
-const emb = getQueryEmbedding('hello');
+const getQueryEmbedding = require('./modules/getQueryEmbedding').getQueryEmbedding
+const getOpenAiResponse = require('./modules/getOpenAiResponse')
 
 const app = express();
 
@@ -29,7 +15,9 @@ app.get('/', (req, res) => {
 
 app.post('/btnSubmit', async (req, res) => {
   const query = req.body.query;
-  const response = await getResponse(query)
+  const emb = getQueryEmbedding('hello');
+  console.log(emb)
+  const response = await getOpenAiResponse(query)
   res.send(response);
 });
 

@@ -1,5 +1,6 @@
-const nodeModulesPath = require('./nodeModulesPath');
+const nodeModulesPath = require('./getNodeModulesPath');
 const { Configuration, OpenAIApi } = require(`${nodeModulesPath}/openai`);
+
 const apiKey = process.env.API_KEY || require('../env/env.js');
 const configuration = new Configuration({
   apiKey: apiKey
