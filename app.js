@@ -5,14 +5,11 @@ const bodyParser = require(`${nodeModulesPath}/body-parser`)
 const getOpenAiResponse = require('./modules/getOpenAiResponse')
 const vectorCalcs = require('./modules/vectorCalcs')
 
-console.log(vectorCalcs())
-
 const app = express();
-
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/html/index.html')
