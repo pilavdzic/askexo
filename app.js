@@ -12,6 +12,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // this is used for parsing the JSON object from POST
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/html/index.html')
