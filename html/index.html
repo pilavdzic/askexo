@@ -1,3 +1,5 @@
+<!--
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,4 +33,60 @@
 	<br>
 	<button id="btnSubmit">Submit</button>
 </body>
+</html>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My Page Title</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<h1>My Banner</h1>
+				<p>This is a sample HTML file using Twitter Bootstrap for styling and including SEO elements.</p>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<form>
+						<div class="form-group">
+							<label for="query">Query:</label>
+							<textarea class="form-control" id="query" rows="5"></textarea>
+						</div>
+						<button type="button" class="btn btn-primary" id="btnSubmit">Submit</button>
+					</form>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-sm-12">
+					<h2>Response:</h2>
+					<p id="response"></p>
+				</div>
+			</div>
+		</div>
+		<!-- jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("#btnSubmit").click(function() {
+					var query = $("#query").val()
+					$.ajax({
+						type: "POST",
+						url: "/btnSubmit",
+						data: { query: query },
+						success: function(response) {
+							console.log(response);
+							$('#response').text(response);
+						}
+					});
+				});
+			});
+		</script>
+	</body>
 </html>
