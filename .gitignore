@@ -1,5 +1,8 @@
 #ignore all txt files
+
 *.txt
 
+
 #ignore all the csv files in the data folder
+
 *.csv
