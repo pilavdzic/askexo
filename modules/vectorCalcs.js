@@ -1,45 +1,41 @@
 const nodeModulesPath = require('./getNodeModulesPath')
-//const linearAlgebra = require(`${nodeModulesPath}/linear-algebra`)();
 const getQueryEmbedding = require('./getQueryEmbedding').getQueryEmbedding
-const { dot } = require(`${nodeModulesPath}/mathjs`)
-//const Vector = linearAlgebra.Vector;
-//const Matrix = linearAlgebra.Matrix;
+const csvReader = require('./csvReader')
+const Decimal = require(`${nodeModulesPath}/decimal.js`);
 
-//const a = [.1212,.142124,.23234234]
-//const b = [.2,.3,.4]
-//console.log('check this...')
-//console.log(dot(a,b));
-
-const sample = Array.from({ length: 3 }, () =>
-    Array.from({ length: 4096 }, () => 
-        Math.random()
-      )
-    );
-
-function vectorSimilarity(x, y){
-	//console.log(x)
-	//console.log('********')
-	//console.log(y)
-  //const xVect = new Matrix(x);
-  //const yVect = new Matrix(y);
-  return dot(x, y)
+function vectorSimilarity(array1, array2) {
+  if (array1.length !== array2.length) {
+    throw new Error("Arrays must have the same length");
+  }
+  let result = new Decimal(0);
+  for (let i = 0; i < array1.length; i++) {
+    result = result.plus(array1[i].times(array2[i]));
+  }
+  return result;
 }
 
-async function orderDocumentSectionsByQuerySimilarity(txt, embedArray){
+async function getRankedEmbeddings(txt){
 	const output = [];
-	const qryEmbed = await getQueryEmbedding(txt); 
-	embedArray.forEach((x, i) => {
-		output.push([vectorSimilarity(qryEmbed, x), i])
-	});
-	output.sort(function(a, b) {
-		return a[0] - b[0];
-	});
-	console.log(output)
-	return output;
+	try{
+		const embedArray = await csvReader('embeddings.csv');
+		const qryEmbed = await getQueryEmbedding(txt);
+		embedArray.forEach((x, i) => {
+			if (i === 0){
+				return;
+			}
+			xTrunc = x;
+			const reg = xTrunc.shift();
+			const hash = xTrunc.shift();
+			output.push([vectorSimilarity(qryEmbed, xTrunc), i, reg])
+		});
+		output.sort(function(a, b) {
+			return b[0] - a[0];
+		});
+		return output;
+		}
+	catch(error){
+		console.error(error);
+		}
 }
 
-function f(){
-	return orderDocumentSectionsByQuerySimilarity('hello', sample)
-}
-
-module.exports = f
+module.exports = getRankedEmbeddings;

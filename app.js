@@ -1,9 +1,8 @@
 const nodeModulesPath = require('./modules/getNodeModulesPath')
 const express = require(`${nodeModulesPath}/express`);
 const bodyParser = require(`${nodeModulesPath}/body-parser`)
-//const getQueryEmbedding = require('./modules/getQueryEmbedding').getQueryEmbedding
 const getOpenAiResponse = require('./modules/getOpenAiResponse')
-const vectorCalcs = require('./modules/vectorCalcs')
+const queryBuilder = require('./modules/queryBuilder')
 
 const app = express();
 
@@ -17,9 +16,8 @@ app.get('/', (req, res) => {
 
 app.post('/btnSubmit', async (req, res) => {
   const query = req.body.query;
-  //const emb = await getQueryEmbedding('hello');
-  //console.log('arr length: ' + emb.length);
-  const response = await getOpenAiResponse(query)
+  const data = await queryBuilder(query);
+  const response = await getOpenAiResponse(data);
   res.send(response);
 });
 

@@ -1,4 +1,6 @@
+const nodeModulesPath = require('./getNodeModulesPath')
 const openai = require('./getOpenAiRequester');
+const Decimal = require(`${nodeModulesPath}/decimal.js`);
 
 const MODEL_NAME = 'curie';
 const QUERY_EMBEDDINGS_MODEL = `text-search-${MODEL_NAME}-query-001`;
@@ -12,15 +14,16 @@ async function getEmbedding(text, model) {
   if (response.object === "error") {
 	throw new Error(response.error.message);
   }
-  return response;
+  const decimalEmbeddings = response.map(value => new Decimal(value.toString(), 50));
+  return decimalEmbeddings;
 }
 
 async function getQueryEmbedding(text) {
   try {
-    const data = await getEmbedding(text, QUERY_EMBEDDINGS_MODEL);
-    return data;
+    const embeddings = await getEmbedding(text, QUERY_EMBEDDINGS_MODEL);
+    return embeddings;
   } catch (error) {
-	console.log(error);
+    console.log(error);
     throw error;
   }
 }
