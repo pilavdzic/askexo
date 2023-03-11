@@ -2,7 +2,7 @@ const nodeModulesPath = require('./getNodeModulesPath');
 const papa = require(`${nodeModulesPath}/papaparse`);
 const fs = require('fs').promises;
 
-var dataPath = './data/'
+var dataPath = '../data/'
 
 async function readFile(filePath) {
   try {
