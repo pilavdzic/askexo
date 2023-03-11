@@ -14,7 +14,9 @@ async function getTopRankedTexts(query){
 	const queryTokens = encode(query).length;
 	try{
 		const textArray = await csvReader(textFile);
+		console.log('received text file of length: ' + textArray.length);
 		const sortedSimilarityArray = await getRankedEmbeddings(query);
+		console.log('received prioritized embeddings: ' + sortedSimilarityArray.length);
 		var totalTokens = prefaceTokens + queryTokens + responseTokens;
 		for (var i = 0; i < sortedSimilarityArray.length; i++){
 			const index = sortedSimilarityArray[i][1];
