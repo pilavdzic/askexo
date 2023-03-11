@@ -18,7 +18,9 @@ async function getRankedEmbeddings(txt){
 	const output = [];
 	try{
 		const embedArray = await csvReader('embeddings.csv');
+		console.log('how many embeddings found: ' + embedArray.length);
 		const qryEmbed = await getQueryEmbedding(txt);
+		console.log('query embedding found? array length: ' + qryEmbed.length);
 		embedArray.forEach((x, i) => {
 			if (i === 0){
 				return;
@@ -31,6 +33,9 @@ async function getRankedEmbeddings(txt){
 		output.sort(function(a, b) {
 			return b[0] - a[0];
 		});
+		for (var i = 0 ; i < 3; i++){
+			console.log(output[i]);	
+		}
 		return output;
 		}
 	catch(error){
