@@ -44,6 +44,7 @@
 					var query = $("#query").val()
 					$.ajax({
 						type: "POST",
+						timeout: 300000,
 						url: "/btnSubmit",
 						data: { query: query },
 						success: function(response) {

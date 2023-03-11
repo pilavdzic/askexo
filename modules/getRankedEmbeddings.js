@@ -27,9 +27,9 @@ async function getRankedEmbeddings(txt) {
 
     stream.on('data', (row) => {
       rowNumber += 1;
-	  if (rowNumber % 200 === 0){
-		  console.log('streaming row ' + rowNumber);
-	  }
+	  //if (rowNumber % 200 === 0){
+	  //console.log('streaming row ' + rowNumber);
+	  //}
       var lineData = row;
 	  const reg = lineData.shift();
 	  const hash = lineData.shift();
