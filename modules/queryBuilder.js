@@ -14,12 +14,12 @@ async function getTopRankedTexts(query){
 	const queryTokens = encode(query).length;
 	try{
 		const textArray = await csvReader(textFile);
-		console.log('received text file of length: ' + textArray.length);
+		//console.log('received text file of length: ' + textArray.length);
 		const sortedSimilarityArray = await getRankedEmbeddings(query);
-		console.log('received prioritized embeddings: ' + sortedSimilarityArray.length);
+		//console.log('received prioritized embeddings: ' + sortedSimilarityArray.length);
 		var totalTokens = prefaceTokens + queryTokens + responseTokens;
 		for (var i = 0; i < sortedSimilarityArray.length; i++){
-			console.log('next index to find: ' + sortedSimilarityArray[i][1]);
+			//console.log('next index to find: ' + sortedSimilarityArray[i][1]);
 			const index = sortedSimilarityArray[i][1];
 			const nextTokens = textArray[index][3];
 			if (parseInt(totalTokens) + parseInt(nextTokens) > maxTokens){
@@ -43,7 +43,7 @@ async function getQuery(query){
 		output += preface + '\n';
 		output += 'Question: ' + query + '\n';
 		output += 'Relevant regulations: ' + texts;
-		console.log('FULL QUERY IS: ' + output);
+		//console.log('FULL QUERY IS: ' + output);
 		return output;
 		}
 	catch(error){
