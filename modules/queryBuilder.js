@@ -33,6 +33,7 @@ async function getTopRankedTexts(query){
 }
 
 async function getQuery(query){
+	console.log('getting query...');
 	var output = '';
 	try{
 		const texts = await getTopRankedTexts(query);
