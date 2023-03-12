@@ -1,4 +1,4 @@
-const nodeModulesPath = require('./getNodeModulesPath')
+const nodeModulesPath = require('./getCorrectFilePath').nodeModulesPath;
 const openai = require('./getOpenAiRequester');
 const Decimal = require(`${nodeModulesPath}/decimal.js`);
 

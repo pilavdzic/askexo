@@ -1,4 +1,4 @@
-const nodeModulesPath = require('./getNodeModulesPath')
+const nodeModulesPath = require('./getCorrectFilePath').nodeModulesPath;
 const {encode, decode} = require(`${nodeModulesPath}/gpt-3-encoder`)
 const csvReader = require('./csvReader')
 const getRankedEmbeddings = require('./getRankedEmbeddings');

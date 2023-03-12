@@ -1,8 +1,12 @@
-const nodeModulesPath = require('./getNodeModulesPath');
+const nodeModulesPath = require('./getCorrectFilePath').nodeModulesPath;
+const dataFolderPath = require('./getCorrectFilePath').dataFolderPath;
 const papa = require(`${nodeModulesPath}/papaparse`);
 const fs = require('fs').promises;
 
-var dataPath = './data/texts/'
+var folderPath = dataFolderPath + 'texts/'
+console.log('***')
+console.log(folderPath);
+console.log('****')
 
 async function readFile(filePath) {
   try {
@@ -15,7 +19,7 @@ async function readFile(filePath) {
 
 async function getDataArray(fileName){
   try {
-    const data = await readFile(dataPath + fileName);
+    const data = await readFile(folderPath + fileName);
     const parsedData = papa.parse(data, {skipEmptyLines:true});
     return parsedData.data;
   } catch (error) {

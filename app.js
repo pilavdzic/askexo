@@ -1,4 +1,4 @@
-const nodeModulesPath = require('./modules/getNodeModulesPath')
+const nodeModulesPath = require('./modules/getCorrectFilePath').nodeModulesPath;
 const express = require(`${nodeModulesPath}/express`);
 const bodyParser = require(`${nodeModulesPath}/body-parser`)
 const getOpenAiResponse = require('./modules/getOpenAiResponse')

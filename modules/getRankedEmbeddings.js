@@ -3,13 +3,17 @@ const fs = require('fs');
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 
-const nodeModulesPath = require('./getNodeModulesPath')
-const getQueryEmbedding = require('./getQueryEmbedding').getQueryEmbedding
+const nodeModulesPath = require('./getCorrectFilePath').nodeModulesPath;
+const dataFolderPath = require('./getCorrectFilePath').dataFolderPath;
+const getQueryEmbedding = require('./getQueryEmbedding').getQueryEmbedding;
 const Decimal = require(`${nodeModulesPath}/decimal.js`);
 const { parse } = require(`${nodeModulesPath}/csv-parse`);
-//const fs = require('fs');
 const path = require('path');
-const folderPath = './data/embeddings/'
+const folderPath = dataFolderPath + 'embeddings/'
+
+console.log('***')
+console.log(folderPath);
+console.log('****')
 
 function vectorSimilarity(array1, array2) {
   if (array1.length !== array2.length) {
