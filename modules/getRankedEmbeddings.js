@@ -1,9 +1,15 @@
+const { promisify } = require('util');
+const fs = require('fs');
+const readdir = promisify(fs.readdir);
+const readFile = promisify(fs.readFile);
+
 const nodeModulesPath = require('./getNodeModulesPath')
 const getQueryEmbedding = require('./getQueryEmbedding').getQueryEmbedding
 const Decimal = require(`${nodeModulesPath}/decimal.js`);
 const { parse } = require(`${nodeModulesPath}/csv-parse`);
-const { createReadStream } = require('fs');
-const dataPath = './data/'
+//const fs = require('fs');
+const path = require('path');
+const folderPath = './data/embeddings/'
 
 function vectorSimilarity(array1, array2) {
   if (array1.length !== array2.length) {
@@ -18,126 +24,55 @@ function vectorSimilarity(array1, array2) {
 
 async function getRankedEmbeddings(txt) {
   try {
-    let rowNumber = 0;
-    const output = [];
+    let output = [];
     const maxOutputRows = 25;
+	const qryEmbed = await getQueryEmbedding(txt);
 
-    const qryEmbed = await getQueryEmbedding(txt);
-    const stream = createReadStream(dataPath + 'embeddings.csv').pipe(parse({ delimiter: ',', from_line: 2 }));
+	console.time('loading files');
+	
+	const files = await readdir(folderPath);
+	const csvFiles = files.filter((file) => path.extname(file) === '.csv');
+	
+	for (const csvFile of csvFiles) {
+	  const csvFilePath = path.join(folderPath, csvFile);
 
-    stream.on('data', (row) => {
-      rowNumber += 1;
-	  //if (rowNumber % 200 === 0){
-	  //console.log('streaming row ' + rowNumber);
-	  //}
-      var lineData = row;
-	  const reg = lineData.shift();
-	  const hash = lineData.shift();
-      const similarity = vectorSimilarity(qryEmbed, lineData);
-      if (output.length < maxOutputRows) {
-        output.push([similarity, rowNumber, reg]);
-      } else {
-        const last = output.pop();
-        const toAdd = (similarity > last[0]) ? [similarity, rowNumber, reg] : last;
-        output.push(toAdd);
-      }
-      output.sort((a, b) => b[0] - a[0]);
-    });
-
-    return new Promise((resolve, reject) => {
-      stream.on('end', () => {
-        resolve(output);
+      const data = await readFile(csvFilePath, 'utf8');
+	  
+	  // Parse the CSV data using csv-parse
+      const parsedData = await new Promise((resolve, reject) => {
+        parse(data, { delimiter: ',', from_line: 2 }, (err, parsedData) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(parsedData);
+          }
+        });
       });
-      stream.on('error', (error) => {
-        reject(error);
+		
+      parsedData.forEach((row) => {
+        const rowNumber = row.shift();
+		const reg = row.shift();
+        const hash = row.shift();
+        const similarity = vectorSimilarity(qryEmbed, row);
+        if (output.length < maxOutputRows) {
+          output.push([similarity, hash, reg]);
+        } else {
+          const last = output.pop();
+          const toAdd = (similarity > last[0]) ? [similarity, rowNumber, reg] : last;
+          output.push(toAdd);
+        }
+        output.sort((a, b) => b[0] - a[0]);
       });
-    });
+    }
+
+    console.timeEnd('loading files');
+    console.log(output);
+    return output;
+
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
-
-
-/*
-async function getRankedEmbeddings(txt) {
-  return new Promise((resolve, reject) => {
-    let rowNumber = 0;
-    const output = [];
-    const maxOutputRows = 25;
-
-    const qryEmbed = await getQueryEmbedding(txt);
-    const stream = createReadStream(dataPath + 'embeddings.csv')
-      .pipe(parse({ delimiter: ',', from_line: 2 }));
-
-    stream.on('data', (row) => {
-      rowNumber += 1;
-      var lineData = row;
-	  const reg = lineData.shift();
-	  const hash = lineData.shift();
-      const similarity = vectorSimilarity(qryEmbed, lineData);
-      if (output.length < maxOutputRows) {
-        output.push([similarity, rowNumber, reg]);
-      } else {
-        const last = output.pop();
-        const toAdd = (similarity > last[0]) ? [similarity, rowNumber, reg] : last;
-        output.push(toAdd);
-      }
-      output.sort((a, b) => b[0] - a[0]);
-    });
-
-    stream.on('end', () => {
-      resolve(output);
-    });
-
-    stream.on('error', (error) => {
-      reject(error);
-    });
-  });
-}
-*/
-/*
-
-async function getRankedEmbeddings(txt){
-	var rowNumber = 0;
-	const output = [];
-	const maxOutputRows = 25;
-	try{
-		const qryEmbed = await getQueryEmbedding(txt);
-		fs.createReadStream(dataPath + 'embeddings.csv')
-		.pipe(parse({ delimiter: ",", from_line: 2 }))
-		.on("data", function (row) {
-			rowNumber += 1;
-			var lineData = row;
-			const reg = lineData.shift();
-			const hash = lineData.shift();
-			const similarity = vectorSimilarity(qryEmbed, lineData);
-			if (output.length < maxOutputRows){
-				output.push([similarity, rowNumber, reg]);
-			}
-			else{
-				const last = output.pop();
-				//console.log((similarity > last[0]) ? 'new one ' + similarity + '>' + last[0] : 'old one '+ last[0] + '>' + similarity);
-				const toAdd = (similarity > last[0]) ? [similarity, rowNumber, reg] : last;
-				output.push(toAdd);
-			}
-			output.sort(function(a, b) {
-				return b[0] - a[0];
-			});
-		})
-		.on("end", function () {
-			//console.log("finished");
-			//console.log(output);
-			return output;
-		})
-		.on("error", function (error) {
-			console.log(error.message);
-		});
-		}
-	catch(error){
-		console.error(error);
-		}
-}
-*/
-
+	
 module.exports = getRankedEmbeddings;

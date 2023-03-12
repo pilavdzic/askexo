@@ -18,11 +18,7 @@ app.post('/btnSubmit', async (req, res) => {
   console.log('request received...');
   const query = req.body.query;
   const data = await queryBuilder(query);
-  //console.log('***');
-  //console.log(data);
-  //console.log('***');
   const response = await getOpenAiResponse(data);
-  console.log(response);
   res.send(response);
 });
 

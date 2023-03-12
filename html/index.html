@@ -1,59 +1,59 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Federal Government Travel Policy Resource | AI-based Guide to Federal Travel Regulations and Policy</title>
-		<meta charset="UTF-8">
-		<meta name="description" content="An AI-powered guide to the latest federal government travel policy information and resources. Stay up-to-date on travel policies, restrictions, and best practices for government employees.">
-		<meta name="keywords" content="federal government, travel policy, resources, allowances, restrictions, government employees">
-		<meta property="og:title" content="Federal Government Travel Policy Resource | [Agency Name]">
-		<meta property="og:description" content="Find the latest federal government travel policy information and resources on our [Agency Name] website. Stay up-to-date on travel allowances, restrictions, and best practices for government employees.">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	</head>
-	<body>
-		<div class="container">
-			<div class="jumbotron">
-				<img src="resources/askexoicon.svg" width="40%" height="40%">
-			</div>
-			<div class="row">
-				<div class="col-sm-12">
-					<form>
-						<div class="form-group">
-							<label for="query">Query:</label>
-							<textarea class="form-control" id="query" rows="5"></textarea>
-						</div>
-						<button type="button" class="btn btn-primary" id="btnSubmit">Submit</button>
-					</form>
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Federal Government Travel Policy Resource | AI-based Guide to Federal Travel Regulations and Policy</title>
+			<meta charset="UTF-8">
+			<meta name="description" content="An AI-powered guide to the latest federal government travel policy information and resources. Stay up-to-date on travel policies, restrictions, and best practices for government employees.">
+			<meta name="keywords" content="federal government, travel policy, resources, allowances, restrictions, government employees">
+			<meta property="og:title" content="Federal Government Travel Policy Resource | [Agency Name]">
+			<meta property="og:description" content="Find the latest federal government travel policy information and resources on our [Agency Name] website. Stay up-to-date on travel allowances, restrictions, and best practices for government employees.">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<!-- Bootstrap CSS -->
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		</head>
+		<body>
+			<div class="container">
+				<div class="jumbotron">
+					<img src="resources/askexoicon.svg" width="40%" height="40%">
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<form>
+							<div class="form-group">
+								<label for="query">Query:</label>
+								<textarea class="form-control" id="query" rows="5"></textarea>
+							</div>
+							<button type="button" class="btn btn-primary" id="btnSubmit">Submit</button>
+						</form>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-sm-12">
+						<h2>Response:</h2>
+						<p id="response"></p>
+					</div>
 				</div>
 			</div>
-			<div class="row mt-3">
-				<div class="col-sm-12">
-					<h2>Response:</h2>
-					<p id="response"></p>
-				</div>
-			</div>
-		</div>
-		<!-- jQuery -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<!-- Bootstrap JS -->
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-		<script>
-			$(document).ready(function() {
-				$("#btnSubmit").click(function() {
-					var query = $("#query").val()
-					$.ajax({
-						type: "POST",
-						timeout: 300000,
-						url: "/btnSubmit",
-						data: { query: query },
-						success: function(response) {
-							console.log(response);
-							$('#response').text(response);
-						}
+			<!-- jQuery -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<!-- Bootstrap JS -->
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+			<script>
+				$(document).ready(function() {
+					$("#btnSubmit").click(function() {
+						var query = $("#query").val()
+						$.ajax({
+							type: "POST",
+							timeout: 300000,
+							url: "/btnSubmit",
+							data: { query: query },
+							success: function(response) {
+								console.log(response);
+								$('#response').text(response);
+							}
+						});
 					});
 				});
-			});
-		</script>
-	</body>
-</html>
+			</script>
+		</body>
+	</html>
