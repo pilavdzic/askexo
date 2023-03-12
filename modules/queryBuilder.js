@@ -17,6 +17,7 @@ async function getTopRankedTexts(query){
 		const sortedSimilarityArray = await getRankedEmbeddings(query);
 		var totalTokens = prefaceTokens + queryTokens + responseTokens;
 		for (var i = 0; i < sortedSimilarityArray.length; i++){
+			console.log(sortedSimilarityArray[i]);
 			const index = sortedSimilarityArray[i][1];
 			const nextTokens = textArray[index][3];
 			if (parseInt(totalTokens) + parseInt(nextTokens) > maxTokens){

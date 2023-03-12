@@ -55,7 +55,7 @@ async function getRankedEmbeddings(txt) {
         const hash = row.shift();
         const similarity = vectorSimilarity(qryEmbed, row);
         if (output.length < maxOutputRows) {
-          output.push([similarity, hash, reg]);
+          output.push([similarity, rowNumber, reg]);
         } else {
           const last = output.pop();
           const toAdd = (similarity > last[0]) ? [similarity, rowNumber, reg] : last;
