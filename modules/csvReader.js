@@ -4,9 +4,6 @@ const papa = require(`${nodeModulesPath}/papaparse`);
 const fs = require('fs').promises;
 
 var folderPath = dataFolderPath + 'texts/'
-console.log('***')
-console.log(folderPath);
-console.log('****')
 
 async function readFile(filePath) {
   try {

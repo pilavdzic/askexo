@@ -3,28 +3,51 @@ const {encode, decode} = require(`${nodeModulesPath}/gpt-3-encoder`)
 const csvReader = require('./csvReader')
 const getRankedEmbeddings = require('./getRankedEmbeddings');
 
-const preface = "Billy is a helpful, serious, and meticulous policy expert, who has a deep understanding of US Government Federal Travel regulations. He clearly understands that he should look for answers first in the most relevant policies (the ADS), and only afterward in the more general ones (the FAM, the FAH, and the FTR). He responds to all questions in as much detail as possible, and given his rather pedantic nature he gives relevant quotes and citations from the regulations with every response. Always eager to provide the most accurate answer he can, Billy has a strong aversion to giving incorrect or misleading guidance, so he's quick to point out any ambiguities or limits to his understanding, and he readily admits when he's not sure of the correct response. Please put yourself in the role of Billy and respond to this question, using these potentially relevant regulations";
+const preface = "Bureaucron 9000 is a helpful, serious, and meticulous AI bot and policy expert, who has a deep understanding of US Government Federal Travel regulations. He clearly understands that he should look for answers first in the most relevant policies (the ADS), and only afterward in the more general ones (the FAM, the FAH, and the FTR). He responds to all questions in as much detail as possible, and given his rather pedantic nature he gives relevant quotes and citations from the regulations with every response. Always eager to provide the most accurate answer he can, Billy has a strong aversion to giving incorrect or misleading guidance, so he's quick to point out any ambiguities or limits to his understanding, and he readily admits when he's not sure of the correct response. Please put yourself in the role of Billy and respond to this question, using these potentially relevant regulations";
 const prefaceTokens = encode(preface).length;
 const responseTokens = 500;
 const maxTokens = 2000;
 const textFile = 'texts.csv';
+
+function sortTexts(a, b){
+	return a[1].localeCompare(b[1]);
+}
+
+function binarySearch(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (arr[mid][1] === target) {
+      return arr[mid];
+    } else if (arr[mid][1] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+}
 
 async function getTopRankedTexts(query){
 	var output = '';
 	const queryTokens = encode(query).length;
 	try{
 		const textArray = await csvReader(textFile);
+		const sortedTextArray = textArray.sort(sortTexts);		
 		const sortedSimilarityArray = await getRankedEmbeddings(query);
+		
 		var totalTokens = prefaceTokens + queryTokens + responseTokens;
 		for (var i = 0; i < sortedSimilarityArray.length; i++){
-			console.log(sortedSimilarityArray[i]);
-			const index = sortedSimilarityArray[i][1];
-			const nextTokens = textArray[index][3];
+			const textData = binarySearch(sortedTextArray, sortedSimilarityArray[i]);
+			const nextTokens = textData[3];
 			if (parseInt(totalTokens) + parseInt(nextTokens) > maxTokens){
+				console.log('maxTokens: ' + maxTokens + ' / tokens: ' + totalTokens);
 				break;
 			}
 			totalTokens += parseInt(nextTokens);
-			output += textArray[index][2] + '\n';
+			output += textData[2] + '\n';
+			console.log(textData[0]);
 		}
 		return output;	
 	}
