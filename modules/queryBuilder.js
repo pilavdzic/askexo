@@ -7,10 +7,12 @@ const preface = "Bureaucron 9000 is a helpful, serious, and meticulous AI bot an
 const prefaceTokens = encode(preface).length;
 const responseTokens = 500;
 const maxTokens = 2000;
-const textFile = 'texts.csv';
+const textFile = 'combined_data.csv';
+
+//hash which is the key has to be in 0-index of the text array
 
 function sortTexts(a, b){
-	return a[1].localeCompare(b[1]);
+	return a[0].localeCompare(b[0]);
 }
 
 function binarySearch(arr, target) {
@@ -18,9 +20,9 @@ function binarySearch(arr, target) {
   let right = arr.length - 1;
   while (left <= right) {
     let mid = Math.floor((left + right) / 2);
-    if (arr[mid][1] === target) {
+    if (arr[mid][0] === target) {
       return arr[mid];
-    } else if (arr[mid][1] < target) {
+    } else if (arr[mid][0] < target) {
       left = mid + 1;
     } else {
       right = mid - 1;
@@ -47,7 +49,7 @@ async function getTopRankedTexts(query){
 			}
 			totalTokens += parseInt(nextTokens);
 			output += textData[2] + '\n';
-			console.log(textData[0]);
+			console.log(textData[1]);
 		}
 		return output;	
 	}
