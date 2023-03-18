@@ -26,7 +26,15 @@ app.post('/btnSubmit', async (req, res) => {
   const data = await queryBuilder(query);
   const response = await getOpenAiResponse(data);
   console.log(response);
-  res.send(response);
+  // Convert response object to JSON string
+  const jsonResponse = JSON.stringify({response: response, query: query});
+  
+  // Set the response headers to indicate that the response is JSON
+  res.setHeader('Content-Type', 'application/json');
+  
+  // Send the JSON string as the response
+  res.send(jsonResponse);
+  
 });
 
 const server = app.listen(process.env.PORT || 3000, () => {
