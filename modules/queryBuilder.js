@@ -32,10 +32,10 @@ function binarySearch(arr, target) {
 }
 
 async function getTopRankedTexts(query){
-	var output = '';
+	var output = {text: '', sources: [], tokens: 0};
 	const queryTokens = encode(query).length;
 	try{
-		const textArray = await csvReader(textFile);
+		const textArray = await csvReader.getDataArray(textFile);
 		const sortedTextArray = textArray.sort(sortTexts);		
 		const sortedSimilarityArray = await getRankedEmbeddings(query);
 		
@@ -48,9 +48,11 @@ async function getTopRankedTexts(query){
 				break;
 			}
 			totalTokens += parseInt(nextTokens);
-			output += textData[2] + '\n';
+			output.text += textData[2] + '\n';
+			output.sources.push(textData[1]);
 			console.log(textData[1]);
 		}
+		output.tokens = totalTokens;
 		return output;	
 	}
 	catch(error){
@@ -60,12 +62,14 @@ async function getTopRankedTexts(query){
 
 async function getQuery(query){
 	console.log('getting query...');
-	var output = '';
+	var output = {text: '', sources: [], tokens: 0};
 	try{
 		const texts = await getTopRankedTexts(query);
-		output += preface + '\n';
-		output += 'Question: ' + query + '\n';
-		output += 'Relevant regulations: ' + texts;
+		output.text += preface + '\n';
+		output.text += 'Question: ' + query + '\n';
+		output.text += 'Relevant regulations: ' + texts.text;
+		output.sources = texts.sources;
+		output.tokens = texts.tokens;
 		return output;
 		}
 	catch(error){

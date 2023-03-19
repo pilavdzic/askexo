@@ -4,6 +4,7 @@ const bodyParser = require(`${nodeModulesPath}/body-parser`)
 const getOpenAiResponse = require('./modules/getOpenAiResponse')
 const path = require('path');
 const queryBuilder = require('./modules/queryBuilder')
+const csvReader = require('./modules/csvReader')
 
 const app = express();
 
@@ -24,8 +25,9 @@ app.post('/btnSubmit', async (req, res) => {
   console.log('request received...');
   const query = req.body.query;
   const data = await queryBuilder(query);
-  const response = await getOpenAiResponse(data);
+  const response = await getOpenAiResponse(data.text);
   console.log(response);
+  await csvReader.logQueryResponse(query, response, data.sources, data.tokens);
   // Convert response object to JSON string
   const jsonResponse = JSON.stringify({response: response, query: query});
   

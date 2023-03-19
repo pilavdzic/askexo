@@ -4,6 +4,21 @@ const papa = require(`${nodeModulesPath}/papaparse`);
 const fs = require('fs').promises;
 
 var folderPath = dataFolderPath + 'texts/'
+var logFilePath = dataFolderPath + 'log/'
+
+async function logQueryResponse(query, response, sources, tokens) {
+
+	const timestamp = new Date().toISOString();
+
+	fs.appendFile(logFilePath + 'output_log.csv', `${timestamp}, ${query}, ${response}, ${sources.join(', ')}, ${tokens}\n`)
+	.then(() => {
+		console.log('Data appended to file');
+	})
+	.catch((err) => {
+		console.error(err);
+	});
+}
+
 
 async function readFile(filePath) {
   try {
@@ -23,5 +38,7 @@ async function getDataArray(fileName){
     console.error(`Got an error trying to read the file: ${error.message}`);
   }
 }
+
+
   
-module.exports = getDataArray
+module.exports = {getDataArray: getDataArray, logQueryResponse: logQueryResponse}
