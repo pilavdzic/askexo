@@ -1,14 +1,17 @@
 const openai = require('./getOpenAiRequester');
+const getModel = require('./getConstants').getModel;
+const responseLength = require('./getConstants').responseLength;
 
 async function getResponse(prompt){
-  
-  const response = await openai.createCompletion({
-  model: "text-davinci-003",
-  prompt: prompt,
-  max_tokens: 500,
-  temperature: 0
-  });
-  return response.data.choices[0].text
+		
+	const completion = await openai.createChatCompletion({
+	model: getModel(),
+	messages: prompt,
+	max_tokens: responseLength(),
+	});
+	console.log(completion.data.choices[0].message);
+	return completion.data.choices[0].message.content;
+
 }
 
 module.exports = getResponse
