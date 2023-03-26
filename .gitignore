@@ -6,3 +6,5 @@
 
 #ignore all the db files in the db folder
 *.db
+db/
+
