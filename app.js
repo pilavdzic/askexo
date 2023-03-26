@@ -63,13 +63,11 @@ app.post('/btnSubmit', async (req, res) => {
   
   await csvReader.logQueryResponse(query, response, data.sources, data.tokens);
   console.log(`4. the session contains ${req.session.userData.messages.length} messages`)
-  // Convert response object to JSON string
+  
   const jsonResponse = JSON.stringify({response: response, query: query, frontendDiagnostics: frontendDiagnostics});
   
-  // Set the response headers to indicate that the response is JSON
   res.setHeader('Content-Type', 'application/json');
   
-  // Send the JSON string as the response
   res.send(jsonResponse);
   
 });
