@@ -22,7 +22,7 @@ async function getRankedEmbeddings(txt) {
 			topK: 20,
 			includeValues: true,
 		},
-		namespace: "embeddings-namespace",
+		namespace: "",
 	});
 	
 	queryResponse.matches.forEach((ele) => {

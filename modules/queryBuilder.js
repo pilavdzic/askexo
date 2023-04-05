@@ -10,7 +10,7 @@ const responseLength = getConstants.responseLength();
 const textFile = 'all_sources.csv';
 
 async function numTokensFromMessages(messages, model = getConstants.getModel()) {
-  if (model === "gpt-3.5-turbo-0301") {
+  //if (model === "gpt-3.5-turbo-0301") {
     let num_tokens = 0;
     for (const message of messages) {
       num_tokens += 4;
@@ -23,9 +23,9 @@ async function numTokensFromMessages(messages, model = getConstants.getModel()) 
     }
     num_tokens += 2;
     return num_tokens;
-  } else {
-    throw new Error(`num_tokens_from_messages() is not presently implemented for model ${model}. See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.`);
-  }
+  //} else {
+  //  throw new Error(`num_tokens_from_messages() is not presently implemented for model ${model}. See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.`);
+  //}
 }
 
 function sortTexts(a, b){
@@ -67,6 +67,7 @@ async function getTopRankedTexts(query){
 			}
 		}
 		output.tokens = textTokens;
+		console.log(output.text)
 		return output;	
 	}
 	catch(error){
@@ -75,7 +76,7 @@ async function getTopRankedTexts(query){
 }
 
 async function getQuery(query){
-	console.log(`getting query...${query}`);
+	console.log(`getting query...${query} up to max tokens of ${maxTextTokens}`);
 	var output = {text: '', sources: [], tokens: 0};
 	try{
 		const texts = await getTopRankedTexts(query);

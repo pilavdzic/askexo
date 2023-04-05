@@ -8,3 +8,6 @@
 *.db
 db/
 
+#ignore everything in the garbage folder
+garbage/
+
