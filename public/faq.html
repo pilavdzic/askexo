@@ -23,19 +23,23 @@
 		<div class="faq-history">
 			<div>
 				<p class="message user-message">How does this site work?</p>
-				<p class="message response-message">This system utilizes the OpenAI API to provide responses to user queries. Given the potential for unreliable factual outputs from GPT-3, the system first identifies relevant sections of the regulations and appends them to the user's query. By instructing GPT-3 to refer to these selected regulations when generating its response, the system produces more accurate and targeted responses than GPT-3 would otherwise provide.</p>
+				<p class="message response-message">This system uses OpenAI's GPT-4 to give responses to user queries.</p>
 			</div>
 			<div>
-				<p class="message user-message">Which sets of regulations are used in the embeddings?</p>
-				<p class="message response-message">At present, the system uses the FAM, FAH, and ADS.</p>
+				<p class="message user-message">How is this site different from ChatGPT?</p>
+				<p class="message response-message">This system contains a library of pre-formatted excerpts from the relevant regulations.  Behind the scenes, the system picks one or more relevant policies from among that library, appends it to your query, and then directs GPT-4 to refer to that particular text when formulating its response.  The result should usually be more focused and accurate than you would get if you put the same query into ChatGPT.</p>
+			</div>
+			<div>
+				<p class="message user-message">Which sets of regulations are in the library?</p>
+				<p class="message response-message">At present, the library contains the Foreign Affairs Manual.  In the future it will contain other related sets of regualtions, such as the FAH, DSSR, ADS, AIDAR, etc.</p>
 			</div>
 			<div>
 				<p class="message user-message">Are these responses completely accurate?</p>
-				<p class="message response-message">No. Although the use of embeddings makes these responses more accurate than what GPT-3 would otherwise provide, they can still contain factually incorrect information.  You should double-check the accuracy of the responses provided.</p>
+				<p class="message response-message">Probably not!  The responses should usually cite specific regulations, which you can use to double-check their accuracy.</p>
 			</div>
 			<div>
 				<p class="message user-message">Should I include any Personally Identifiable Information (PII) in the questions I submit?</p>
-				<p class="message response-message">No.</p>
+				<p class="message response-message"><img src="/images/no.png">   No.</p>
 			</div>
 		</div>
 	</div>

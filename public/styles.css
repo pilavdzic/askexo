@@ -114,6 +114,12 @@ nav {
     padding: 8px 12px;
     border-radius: 5px;
 	overflow-y: auto;
+	white-space: pre-wrap;
+}
+
+.message img {
+  max-height: 20px;;
+  max-width: 100%;
 }
 
 .user-message {
