@@ -114,7 +114,7 @@ nav {
     padding: 8px 12px;
     border-radius: 5px;
 	overflow-y: auto;
-	white-space: pre-wrap;
+	/*white-space: pre-wrap;*/
 }
 
 .message img {
