@@ -20,7 +20,7 @@ app.use(session({
   secret: 'a bird is my friend',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true, maxAge: 30 * 60 * 1000 },//NEED TO SET TO TRUE?
+  cookie: { secure: false, maxAge: 30 * 60 * 1000 },//IF SET TO TRUE SESSIONS ARENT PRESERVED?
   store: store
 }));
 
@@ -32,7 +32,8 @@ app.use(express.static(path.join(__dirname,'public')));
 
 app.use((req, res, next) => {
   if (!req.session.userData) {
-    req.session.userData = { messages: [{'role': 'user', 'content':  getPreface()}] };
+    console.log('new session...')
+	req.session.userData = { messages: [{'role': 'user', 'content':  getPreface()}] };
   }
   next();
 });
@@ -49,22 +50,28 @@ app.post('/btnSubmit', async (req, res) => {
   const query = req.body.query;
   const data = await queryBuilder.getQuery(query);
   console.log(`1. the session contains ${req.session.userData.messages.length} messages`)
-  req.session.userData.messages.push({'role': 'user', 'content':  data.text});
+  
+  req.session.userData.messages = req.session.userData.messages.slice(0,1)
   console.log(`2. the session contains ${req.session.userData.messages.length} messages`)
-  const messages = await queryBuilder.parseMessages(req.session.userData.messages);
-  req.session.userData.messages = messages
+  
+  req.session.userData.messages.push({'role': 'user', 'content':  data.text});
   console.log(`3. the session contains ${req.session.userData.messages.length} messages`)
+  
+  //const messages = await queryBuilder.parseMessages(req.session.userData.messages);
+  //req.session.userData.messages = messages
+  //console.log(`4. the session contains ${req.session.userData.messages.length} messages`)
+  
   const response = await getOpenAiResponse(req.session.userData.messages);
-  req.session.userData.messages.push({'role': 'assistant', 'content': response});
-  var frontendDiagnostics = '';
+  //req.session.userData.messages.push({'role': 'assistant', 'content': response});
+  var frontendDiagnostics = {}
   if (passDiagnostics()) {
-	frontendDiagnostics = await queryBuilder.getFrontendDiagnostics(req.session.userData.messages);
+	frontendDiagnostics = {tokens: response.tokens, finishReason: response.finishReason};
   }
   
   await csvReader.logQueryResponse(query, response, data.sources, data.tokens);
-  console.log(`4. the session contains ${req.session.userData.messages.length} messages`)
+  //console.log(`5. the session contains ${req.session.userData.messages.length} messages`)
   
-  const jsonResponse = JSON.stringify({response: response, query: query, frontendDiagnostics: frontendDiagnostics});
+  const jsonResponse = JSON.stringify({response: response.content, query: query, frontendDiagnostics: frontendDiagnostics});
   
   res.setHeader('Content-Type', 'application/json');
   

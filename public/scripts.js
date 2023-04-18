@@ -1,21 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
 	
+	var queryInProcess = false;
+	
     const inputBox = document.getElementById("inputBox");
     const sendButton = document.getElementById("sendButton");
     const chatHistory = document.getElementById("chatHistory");
-
-	//add a function to toggle the inputBox event listeners so that they are deactived while ajax is running
 
     // Send message on pressing 'Enter'
     inputBox.addEventListener("keydown", function (event) {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-            sendMessage();
+			if (!queryInProcess){
+				sendMessage();
+				queryInProcess = true;	
+			}
         }
     });
 
     // Send message on clicking the send button
-    sendButton.addEventListener("click", sendMessage);
+    sendButton.addEventListener("click", function(){
+		if (!queryInProcess){
+				sendMessage();
+				queryInProcess = true;	
+			}
+	});
 
     function sendMessage() {
         const message = inputBox.value.trim();
@@ -33,9 +41,14 @@ document.addEventListener("DOMContentLoaded", function () {
 				dataType: "json",
 				success: function(response) {
 					document.querySelector(".spinner").classList.toggle("spinner-hidden");
-					const q = response.query;
+					queryInProcess = false;
+					//const q = response.query;
 					const r = response.response;
-					const dataAsString = JSON.stringify({query: q, response: r});
+					if (Object.keys(response.frontendDiagnostics).length !== 0){
+					  console.log('tokens: ' + response.frontendDiagnostics.tokens);
+					  console.log('finish reason: ' + response.frontendDiagnostics.finishReason);
+					}
+					//const dataAsString = JSON.stringify({query: q, response: r});
 					addMessageToChat("response", r);
 				},
 				error: function(xhr, status, error) {
@@ -60,4 +73,20 @@ document.addEventListener("DOMContentLoaded", function () {
         inputBox.style.height = inputBox.scrollHeight + "px";
     });
 	
+	
+	var alternate = true;
+	var counter = 0;
+	function addComment(){
+		counter += 1;
+		var type = alternate ? 'user' : 'not_user';
+		addMessageToChat(type, 'test message ' + counter)
+		if (alternate){
+			alternate = false;
+		}
+		else {
+			alternate = true;
+		}
+	}
+	setInterval(addComment,2000)
+	////////////////
 });

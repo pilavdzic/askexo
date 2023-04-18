@@ -9,8 +9,7 @@ async function getResponse(prompt){
 	messages: prompt,
 	max_tokens: responseLength(),
 	});
-	//console.log(completion.data.choices[0].message);
-	return completion.data.choices[0].message.content;
+	return {content: completion.data.choices[0].message.content, tokens: completion.data.usage.total_tokens, finishReason: completion.data.choices[0].finish_reason} 
 
 }
 

@@ -1,17 +1,17 @@
 
 function getProduction(){
-	const production = true;
+	const production = false;
 	return production;
 }
 
 function getFrontEndDiagnostics (){
-	const showDiagnostics = false;
+	const passDiagnostics = true;
 	const production = getProduction();
-	return production ? false : showDiagnostics; 
+	return production ? false : passDiagnostics; 
 }
 
 function getPreface(){
-	const preface = "Bureaucron 9000 is a helpful AI bot who has a deep understanding of regulations and policies pertaining to the US Foreign Service. He gives accurate answers and provides relevant quotes and citations from the regulations with every response. Bureaucron 9000 has a strong aversion to giving incorrect or misleading guidance, so he's quick to point out any ambiguities or limits to his understanding, and he readily admits when he's not sure of the correct response. Please put yourself in the role of Bureaucron 9000 and respond to this question, using these potentially relevant regulations";
+	const preface = "Bureaucron 9000 is a helpful AI bot who has a deep understanding of regulations and policies pertaining to the US Foreign Service. His answers are accurate, concise, and to-the-point; he provides relevant quotes and citations but never rambles on. Bureaucron 9000 will never mislead with incorrect guidance, so he's quick to admit when he doesn't know the answer. Please put yourself in the role of Bureaucron 9000 and respond to this question, using these potentially relevant regulations";
 	return preface;
 }
 
@@ -22,12 +22,12 @@ function getModel(){
 }
 
 function responseLength(){
-	const length = 350;
+	const length = 500;
 	return length;
 }
 
 function maxTextTokens (){
-	const maxTokens = 800;
+	const maxTokens = 3000;
 	return maxTokens;
 }
 

@@ -10,7 +10,6 @@ const responseLength = getConstants.responseLength();
 const textFile = 'all_sources.csv';
 
 async function numTokensFromMessages(messages, model = getConstants.getModel()) {
-  //if (model === "gpt-3.5-turbo-0301") {
     let num_tokens = 0;
     for (const message of messages) {
       num_tokens += 4;
@@ -23,14 +22,13 @@ async function numTokensFromMessages(messages, model = getConstants.getModel()) 
     }
     num_tokens += 2;
     return num_tokens;
-  //} else {
-  //  throw new Error(`num_tokens_from_messages() is not presently implemented for model ${model}. See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.`);
-  //}
 }
 
+/*
 function sortTexts(a, b){
 	return a[1].localeCompare(b[1]);
 }
+*/
 
 //hash which is the key has to be in 1-index of the text array
 function binarySearch(arr, target) {
@@ -67,7 +65,7 @@ async function getTopRankedTexts(query){
 			}
 		}
 		output.tokens = textTokens;
-		console.log(output.text)
+		//console.log(output.text)
 		return output;	
 	}
 	catch(error){
@@ -91,6 +89,7 @@ async function getQuery(query){
 		}
 }
 
+/*
 async function parseMessages(messages){
 	var numberTokens = await numTokensFromMessages(messages);
 	console.log(`number of tokens: ${numberTokens}`);
@@ -104,9 +103,11 @@ async function parseMessages(messages){
 	return messages;	
 }
 
+
 async function getFrontendDiagnostics(messages){
 	return {numberMessages: messages.length,
 			messages: messages};
 }
+*/
 
-module.exports = {getQuery: getQuery, parseMessages: parseMessages, getFrontendDiagnostics: getFrontendDiagnostics};
+module.exports = {getQuery: getQuery}//, parseMessages: parseMessages, getFrontendDiagnostics: getFrontendDiagnostics};
