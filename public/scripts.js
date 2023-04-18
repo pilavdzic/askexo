@@ -73,20 +73,4 @@ document.addEventListener("DOMContentLoaded", function () {
         inputBox.style.height = inputBox.scrollHeight + "px";
     });
 	
-	
-	var alternate = true;
-	var counter = 0;
-	function addComment(){
-		counter += 1;
-		var type = alternate ? 'user' : 'not_user';
-		addMessageToChat(type, 'test message ' + counter)
-		if (alternate){
-			alternate = false;
-		}
-		else {
-			alternate = true;
-		}
-	}
-	setInterval(addComment,2000)
-	////////////////
 });
