@@ -1,6 +1,6 @@
 
 function getProduction(){
-	const production = false;
+	const production = true;
 	return production;
 }
 
